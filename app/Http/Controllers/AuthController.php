@@ -46,15 +46,13 @@ class AuthController extends Controller
 
         if($user) {
             return response()->json([
-                'params'    => $request->query('username'),
                 'exist'     => true
             ]);
         }
 
         return response()->json([
-            'params'    => $request->query('username'),
             'exist'     => false
-        ], 404); 
+        ]);
     }
 
     public function user()
