@@ -40,6 +40,23 @@ class AuthController extends Controller
         ], 200)->withCookie($cookie)->withCookie($userRole);
     }
 
+    // Check existing username
+    public function checkUsername(Request $request) {
+        $user = User::where("username", $request->query('username'))->first();
+
+        if($user) {
+            return response()->json([
+                'params'    => $request->query('username'),
+                'exist'     => true
+            ]);
+        }
+
+        return response()->json([
+            'params'    => $request->query('username'),
+            'exist'     => false
+        ], 404); 
+    }
+
     public function user()
     {
         return Auth::user();
