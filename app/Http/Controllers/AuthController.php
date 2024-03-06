@@ -12,9 +12,10 @@ class AuthController extends Controller
 {
     // Register
     public function register(Request $request) {
+
         return $user = User::create([
-            'username'      => $request->input('username'),
-            'password'      => $request->input('password'),
+            'username'      => $request->input('formData.username'),
+            'password'      => $request->input('formData.password'),
             'role'          => 3
         ]);
     }
@@ -24,8 +25,8 @@ class AuthController extends Controller
     {
         if(!Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
-                'message' => 'Invalid credentials'
-            ], 401);
+                'message' => 'Invalid username or password'
+            ], 404);
         }
 
         $user = Auth::user();
@@ -46,15 +47,13 @@ class AuthController extends Controller
 
         if($user) {
             return response()->json([
-                'params'    => $request->query('username'),
                 'exist'     => true
             ]);
         }
 
         return response()->json([
-            'params'    => $request->query('username'),
             'exist'     => false
-        ], 404); 
+        ], 200); 
     }
 
     public function user()
