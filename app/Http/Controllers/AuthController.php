@@ -33,11 +33,11 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         $cookie = cookie('jwt', $token, 60 * 24); // 1 day
-        $userRole = cookie('userRole', $user->role, 60 * 24); // 1 day
 
         return response()->json([
-            'message' => 'Logged In'
-        ], 200)->withCookie($cookie)->withCookie($userRole);
+            'message'   => 'Logged In',
+            'user'      => $user
+        ], 200)->withCookie($cookie);
     }
 
     // Check existing username
