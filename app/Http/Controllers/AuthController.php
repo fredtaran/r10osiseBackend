@@ -63,7 +63,6 @@ class AuthController extends Controller
     public function logout()
     {
         $cookie = Cookie::forget('jwt');
-        $userRole = Cookie::forget('userRole');
 
         return response()->json([
             'message' => 'Logged out'
