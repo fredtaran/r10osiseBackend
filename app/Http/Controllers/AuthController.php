@@ -66,6 +66,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Logged out'
-        ])->withCookie($cookie)->withCookie($userRole);
+        ])->withCookie($cookie);
     }
 }
