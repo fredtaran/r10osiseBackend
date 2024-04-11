@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use App\Rules\MatchPassword;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -68,5 +69,14 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out'
         ])->withCookie($cookie);
+    }
+
+    public function changePassword(Request $request, $user_id) {
+        // Validate
+        $user_credentials = $request->validate([
+            'currentPassword' => ['required', new MatchPassword]
+        ]);
+
+        $user = User::findOrFail($user_id);
     }
 }

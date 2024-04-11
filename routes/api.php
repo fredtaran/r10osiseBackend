@@ -24,4 +24,5 @@ Route::get('fetchCSRFToken', [AuthController::class, 'csrfTokenGenerator']);
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('change-password/{user_id}', [AuthController::class, 'changePassword']);
 });
