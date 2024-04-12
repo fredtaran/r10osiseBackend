@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+
 use App\Rules\MatchPassword;
 use App\Models\User;
 
@@ -48,12 +51,12 @@ class AuthController extends Controller
 
         if($user) {
             return response()->json([
-                'exist'     => true
+                'exist' => true
             ]);
         }
 
         return response()->json([
-            'exist'     => false
+            'exist' => false
         ]);
     }
 
@@ -74,9 +77,22 @@ class AuthController extends Controller
     public function changePassword(Request $request, $user_id) {
         // Validate
         $user_credentials = $request->validate([
-            'currentPassword' => ['required', new MatchPassword]
+            'currentPassword'   => ['required', new MatchPassword],
+            'newPassword'       => ['required']
         ]);
 
         $user = User::findOrFail($user_id);
+
+        if($user) {
+            $user->password = Hash::make($request->input('newPassword'));
+            $user->save();
+            return response()->json([
+                'msg' => 'Password change successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'msg' => 'User doesn\'t exist.'
+            ]);
+        }
     }
 }
